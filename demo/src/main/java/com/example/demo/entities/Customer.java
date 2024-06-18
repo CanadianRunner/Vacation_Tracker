@@ -1,6 +1,9 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -23,21 +26,28 @@ public class Customer {
     @Column(name = "customer_id", nullable = false)
     private Long id;
 
-    @Column(name = "customer_first_name", nullable = false)
+    @NotBlank(message = "First name is required")
+    @Size(max = 50, message = "First name must not exceed 50 characters")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "customer_last_name", nullable = false)
+    @NotBlank(message = "Last name is required")
+    @Size(max = 50, message = "Last name must not exceed 50 characters")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "division_id", nullable = false, updatable = false)
-    private Long divisionId;
-
+    @NotBlank(message = "Address is required")
+    @Size(max = 255, message = "Address must not exceed 255 characters")
     @Column(name = "address", nullable = false)
     private String address;
 
+    @NotBlank(message = "Postal code is required")
+    @Size(min = 6, max = 7, message = "Postal code must be between 5 and 10 characters")
     @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
     @Column(name = "phone", nullable = false)
     private String phone;
 
@@ -52,6 +62,9 @@ public class Customer {
     @ManyToOne
     @JoinColumn(name = "division_id", nullable = false, updatable = false, insertable = false)
     private Division division;
+
+    @Column(name = "division_id", nullable = false, updatable = false)
+    private Long divisionId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private Set<Cart> carts = new HashSet<>();
