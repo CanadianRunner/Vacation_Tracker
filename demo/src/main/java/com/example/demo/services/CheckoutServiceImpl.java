@@ -28,28 +28,39 @@ public class CheckoutServiceImpl implements CheckoutService {
     @Override
     @Transactional
     public PurchaseResponse placeOrder(Purchase purchase) {
+        try {
+            Customer customer = purchase.getCustomer();
+            Cart cart = purchase.getCart();
 
-        Customer customer = purchase.getCustomer();
+            if (customer == null) {
+                throw new IllegalArgumentException("Customer information is required.");
+            }
 
-        Cart cart = purchase.getCart();
+            Set<CartItem> cartItems = purchase.getCartItems();
+            if (cartItems == null || cartItems.isEmpty()) {
+                throw new IllegalArgumentException("At least one cart item is required.");
+            }
 
-        String orderTrackingNumber = generateOrderTrackingNumber();
-        cart.setOrderTrackingNumber(orderTrackingNumber);
+            String orderTrackingNumber = generateOrderTrackingNumber();
+            cart.setOrderTrackingNumber(orderTrackingNumber);
 
-        Set<CartItem> cartItems = purchase.getCartItems();
-        for (CartItem cartItem : cartItems) {
-            cart.addItem(cartItem);
+            for (CartItem cartItem : cartItems) {
+                cart.addItem(cartItem);
+            }
+
+            cart.setCustomer(customer);
+            cart.setStatus(StatusType.ordered);
+
+            customerRepository.save(customer);
+            cartRepository.save(cart);
+
+            return new PurchaseResponse(orderTrackingNumber);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Validation Error: " + e.getMessage());
+            throw e;
         }
-
-        cart.setCustomer(customer);
-
-        cart.setStatus(StatusType.ordered);
-
-        customerRepository.save(customer);
-        cartRepository.save(cart);
-
-        return new PurchaseResponse(orderTrackingNumber);
     }
+
     private String generateOrderTrackingNumber() {
         return UUID.randomUUID().toString();
     }

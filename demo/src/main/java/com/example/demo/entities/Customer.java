@@ -42,12 +42,12 @@ public class Customer {
     private String address;
 
     @NotBlank(message = "Postal code is required")
-    @Size(min = 6, max = 7, message = "Postal code must be between 5 and 10 characters")
+    @Size(min = 6, max = 7, message = "Postal code must be between 6 and 7 characters")
     @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
+    @Pattern(regexp = "\\d{10}", message = "Please enter a valid ten digit phone number")
     @Column(name = "phone", nullable = false)
     private String phone;
 
