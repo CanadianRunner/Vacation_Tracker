@@ -1,8 +1,8 @@
 package com.example.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,49 +16,43 @@ import java.util.Set;
 @Table(name = "carts")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_id")
-    @JsonProperty("id")
+    @Column(name = "cart_id", nullable = false)
     private Long id;
 
-    @Column(name = "order_tracking_number")
-    @JsonProperty("orderTrackingNumber")
+    @Column(name = "order_tracking_number", nullable = false)
     private String orderTrackingNumber;
 
-    @Column(name = "package_price")
-    @JsonProperty("package_price")
+    @Column(name = "package_price", nullable = false)
     private BigDecimal package_price;
 
-    @Column(name = "party_size")
-    @JsonProperty("party_size")
+    @Column(name = "party_size", nullable = false)
     private int party_size;
 
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    @JsonProperty("status")
     private StatusType status;
 
+    @Column(name = "create_date", updatable = false)
     @CreationTimestamp
-    @Column(name = "create_date")
-    @JsonProperty("create_date")
     private Date create_date;
 
     @UpdateTimestamp
     @Column(name = "last_update")
-    @JsonProperty("last_update")
     private Date last_update;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<CartItem> cartItem = new HashSet<>();
+    private Set<CartItem> cartItems = new HashSet<>();
 
-    public void add(CartItem cartItem) {
-        this.cartItem.add(cartItem);
+    public void add(CartItem item) {
+        this.cartItems.add(item);
     }
 }

@@ -1,15 +1,14 @@
 package com.example.demo.services;
 
 import com.example.demo.dao.CartRepository;
-import com.example.demo.dao.CartItemRepository;
 import com.example.demo.dao.CustomerRepository;
 import com.example.demo.entities.Cart;
 import com.example.demo.entities.CartItem;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.StatusType;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.UUID;
@@ -17,15 +16,13 @@ import java.util.UUID;
 @Service
 public class CheckoutServiceImpl implements CheckoutService {
 
-    private final CartRepository cartRepository;
     private final CustomerRepository customerRepository;
-    private final CartItemRepository cartItemRepository;
+    private final CartRepository cartRepository;
 
     @Autowired
-    public CheckoutServiceImpl(CartRepository cartRepository, CustomerRepository customerRepository, CartItemRepository cartItemRepository) {
+    public CheckoutServiceImpl(CustomerRepository customerRepository, CartRepository cartRepository) {
         this.cartRepository = cartRepository;
         this.customerRepository = customerRepository;
-        this.cartItemRepository = cartItemRepository;
     }
 
     @Override
@@ -35,31 +32,39 @@ public class CheckoutServiceImpl implements CheckoutService {
             Cart cart = purchase.getCart();
             Customer customer = purchase.getCustomer();
             Set<CartItem> cartItems = purchase.getCartItems();
+            String orderTrackingNumber = generateOrderTrackingNumber();
 
             if (customer == null) {
-                throw new IllegalArgumentException("Customer information is required.");
+                throw new IllegalArgumentException("Customer information is required to proceed.");
             }
 
             if (cartItems == null || cartItems.isEmpty()) {
-                throw new IllegalArgumentException("At least one cart item is required.");
+                throw new IllegalArgumentException("At least one cart item is required to proceed.");
             }
 
-            String orderTrackingNumber = generateOrderTrackingNumber();
+            CartItem[] cartItemArray = cartItems.toArray(new CartItem[0]);
+            int i = 0;
+            while (i < cartItemArray.length) {
+                CartItem item = cartItemArray[i];
+                item.setCart(cart);
+                cart.add(item);
+                i++;
+            }
+
             cart.setOrderTrackingNumber(orderTrackingNumber);
             cart.setStatus(StatusType.ordered);
+            customer.add(cart);
 
-            cartItems.forEach(cartItem -> {
-                cart.add(cartItem);
-                cartItem.setCart(cart);
-            });
-
-            cart.setCustomer(customer);
             cartRepository.save(cart);
+            customerRepository.save(customer);
 
             return new PurchaseResponse(orderTrackingNumber);
         } catch (IllegalArgumentException e) {
             System.out.println("Validation Error: " + e.getMessage());
             throw e;
+        } catch (Exception e) {
+            System.out.println("An error occurred while placing the order: " + e.getMessage());
+            throw new RuntimeException("An error occurred while placing the order", e);
         }
     }
 

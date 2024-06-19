@@ -1,56 +1,49 @@
 package com.example.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "vacations")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Vacation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "vacation_id")
-    @JsonProperty("id")
+    @Column(name = "vacation_id", nullable = false)
     private Long id;
 
-    @Column(name = "vacation_title")
-    @JsonProperty("vacation_title")
+    @Column(name = "vacation_title", nullable = false)
     private String vacation_title;
 
-    @Column(name = "image_url")
-    @JsonProperty("image_URL")
-    private String image_URL;
-
-    @Column(name = "description")
-    @JsonProperty("description")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "travel_fare_price")
-    @JsonProperty("travel_price")
+    @Column(name = "travel_fare_price", nullable = false)
     private BigDecimal travel_price;
 
+    @Column(name = "image_url", nullable = false)
+    private String image_URL;
+
+    @Column(name = "create_date", updatable = false)
     @CreationTimestamp
-    @Column(name = "create_date")
-    @JsonProperty("create_date")
-    private Date createDate;
+    private Date create_date;
 
-    @UpdateTimestamp
     @Column(name = "last_update")
-    @JsonProperty("last_update")
-    private Date lastUpdate;
+    @UpdateTimestamp
+    private Date last_update;
 
-    @OneToMany(mappedBy = "vacation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonProperty("excursions")
-    private Set<Excursion> excursions;
+    @OneToMany(mappedBy = "vacation_title", cascade = CascadeType.ALL)
+    private Set<Excursion> excursions = new HashSet<>();
 }

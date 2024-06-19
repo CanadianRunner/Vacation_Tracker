@@ -1,14 +1,14 @@
 package com.example.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -16,58 +16,44 @@ import java.util.Set;
 @Entity
 @Table(name = "customers")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Customer {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id")
-    @JsonProperty("customer_id")
+    @Column(name = "customer_id", nullable = false)
     private Long id;
 
-    @NotBlank(message = "First name is mandatory")
-    @NonNull
-    @Column(name = "customer_first_name")
-    @JsonProperty("firstName")
+    @Column(name = "customer_first_name", nullable = false)
     private String firstName;
 
-    @NotBlank(message = "Last name is mandatory")
-    @Column(name = "customer_last_name")
-    @JsonProperty("lastName")
+    @Column(name = "customer_last_name", nullable = false)
     private String lastName;
 
-    @NotBlank(message = "Address is mandatory")
-    @Column(name = "address")
-    @JsonProperty("address")
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @NotBlank(message = "Postal code is mandatory")
-    @Size(min = 5, max = 10, message = "Postal code must be between 5 and 10 characters")
-    @Column(name = "postal_code")
-    @JsonProperty("postal_code")
+    @Column(name = "postal_code", nullable = false)
     private String postal_code;
 
-    @NotBlank(message = "Phone number is mandatory")
-    @Column(name = "phone")
-    @JsonProperty("phone")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
+    @Column(name = "create_date", updatable = false)
     @CreationTimestamp
-    @Column(name = "create_date")
-    @JsonProperty("create_date")
-    private Date create_date;
+    private Date createDate;
 
-    @UpdateTimestamp
     @Column(name = "last_update")
-    @JsonProperty("last_update")
-    private Date last_update;
+    @UpdateTimestamp
+    private Date lastUpdate;
 
     @ManyToOne
-    @JoinColumn(name = "division_id")
-    @JsonProperty("division_id")
+    @JoinColumn(name = "division_id", nullable = false, updatable = false)
     private Division division;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Cart> carts;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Set<Cart> carts = new HashSet<>();
+
+    public void add(Cart cart) {
+        carts.add(cart);
+    }
 }

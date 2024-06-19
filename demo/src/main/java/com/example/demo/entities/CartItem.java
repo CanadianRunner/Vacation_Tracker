@@ -1,15 +1,14 @@
 package com.example.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,42 +16,34 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_item_id")
-    @JsonProperty("cart_item_id")
+    @Column(name = "cart_item_id", nullable = false)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "vacation_id")
-    @JsonProperty("vacation")
+    @JoinColumn(name = "vacation_id", nullable = false)
     private Vacation vacation;
 
     @ManyToMany
     @JoinTable(
             name = "excursion_cartitem",
-            joinColumns = @JoinColumn(name = "cart_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "excursion_id")
+            joinColumns = @JoinColumn(name = "cart_item_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "excursion_id", nullable = false)
     )
-    @JsonProperty("excursions")
-    private Set<Excursion> excursions;
+    private Set<Excursion> excursions = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
-    @JsonProperty("cart")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
+    @Column(name = "create_date", updatable = false)
     @CreationTimestamp
-    @Column(name = "create_date")
-    @JsonProperty("create_date")
     private Date create_date;
 
-    @UpdateTimestamp
     @Column(name = "last_update")
-    @JsonProperty("last_update")
+    @UpdateTimestamp
     private Date last_update;
-
 }
