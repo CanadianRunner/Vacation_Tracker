@@ -34,6 +34,7 @@ public class Vacation {
     private String imageUrl;
 
     @Column(name = "description")
+    @JsonProperty("description")
     private String description;
 
     @Column(name = "travel_fare_price")
@@ -42,12 +43,15 @@ public class Vacation {
 
     @CreationTimestamp
     @Column(name = "create_date", updatable = false)
+    @JsonProperty("create_date")
     private Date createDate;
 
     @UpdateTimestamp
     @Column(name = "last_update")
+    @JsonProperty("last_update")
     private Date lastUpdate;
 
     @OneToMany(mappedBy = "vacation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonProperty("excursions")
     private Set<Excursion> excursions;
 }
