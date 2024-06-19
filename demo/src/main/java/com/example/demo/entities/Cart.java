@@ -20,34 +20,29 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_id", nullable = false)
-    @JsonProperty("cart_id")
+    @Column(name = "cart_id")
+    @JsonProperty("id")
     private Long id;
 
-    @Column(name = "order_tracking_number", nullable = false)
-    @JsonProperty("order_tracking_number")
+    @Column(name = "order_tracking_number")
+    @JsonProperty("orderTrackingNumber")
     private String orderTrackingNumber;
 
-    @Column(name = "party_size", nullable = false)
-    @JsonProperty("party_size")
-    private int partySize;
-
-    @Column(name = "package_price", nullable = false)
+    @Column(name = "package_price")
     @JsonProperty("package_price")
     private BigDecimal packagePrice;
 
+    @Column(name = "party_size")
+    @JsonProperty("party_size")
+    private int partySize;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     @JsonProperty("status")
     private StatusType status;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    @JsonProperty("customer")
-    private Customer customer;
-
     @CreationTimestamp
-    @Column(name = "create_date", updatable = false)
+    @Column(name = "create_date")
     @JsonProperty("create_date")
     private Date createDate;
 
@@ -56,11 +51,16 @@ public class Cart {
     @JsonProperty("last_update")
     private Date lastUpdate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
-    @JsonProperty("cart_items")
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    @JsonProperty("customer")
+    private Customer customer;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CartItem> cartItems = new HashSet<>();
 
-    public void addItem(CartItem item) {
-        this.cartItems.add(item);
+    public void add(CartItem cartItem) {
+        this.cartItems.add(cartItem);
+        cartItem.setCart(this);
     }
 }

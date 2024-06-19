@@ -23,19 +23,15 @@ public class Division {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "division_id")
-    @JsonProperty("division_id")
+    @JsonProperty("id")
     private Long id;
 
     @Column(name = "division")
-    @JsonProperty("division")
+    @JsonProperty("division_name")
     private String divisionName;
 
-    @Column(name = "country_id", insertable = false, updatable = false)
-    @JsonProperty("country_id")
-    private Long countryID;
-
     @CreationTimestamp
-    @Column(name = "create_date", updatable = false)
+    @Column(name = "create_date")
     @JsonProperty("create_date")
     private Date createDate;
 
@@ -45,16 +41,10 @@ public class Division {
     private Date lastUpdate;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
-    @JsonProperty("country")
+    @JoinColumn(name = "country_id")
+    @JsonProperty("country_id")
     private Country country;
 
     @OneToMany(mappedBy = "division", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonProperty("customers")
     private Set<Customer> customers;
-
-    public void setCountry(Country country) {
-        this.country = country;
-        this.countryID = (country != null) ? country.getId() : null;
-    }
 }

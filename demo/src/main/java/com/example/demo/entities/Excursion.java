@@ -20,7 +20,6 @@ public class Excursion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "excursion_id", nullable = false, updatable = false)
-    @JsonProperty("id")
     private Long id;
 
     @Column(name = "excursion_title")
@@ -28,7 +27,6 @@ public class Excursion {
     private String excursionTitle;
 
     @Column(name = "excursion_price")
-    @JsonProperty("excursion_price")
     private BigDecimal excursionPrice;
 
     @Column(name = "image_url")
@@ -36,21 +34,17 @@ public class Excursion {
     private String imageUrl;
 
     @CreationTimestamp
-    @Column(name = "create_date", updatable = false)
-    @JsonProperty("create_date")
+    @Column(name = "create_date")
     private Date createDate;
 
     @UpdateTimestamp
     @Column(name = "last_update")
-    @JsonProperty("last_update")
     private Date lastUpdate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vacation_id")
-    @JsonProperty("vacation")
     private Vacation vacation;
 
     @ManyToMany(mappedBy = "excursions")
-    @JsonProperty("cart_items")
     private Set<CartItem> cartItems;
 }
