@@ -29,7 +29,7 @@ public class BootStrapData {
             user1.setPostal_code("12345");
             user1.setAddress("99 Greatness Ave");
             user1.setPhone("(555)555-6789");
-            user1.setDivision(divisionRepository.findAll().get(1));
+            user1.setDivision(divisionRepository.findAll().get(7));
             user1.setCreateDate(new Date());
             user1.setLastUpdate(new Date());
             customerRepository.save(user1);
@@ -40,7 +40,7 @@ public class BootStrapData {
             user2.setPostal_code("12345");
             user2.setAddress("66 Super St");
             user2.setPhone("(555)555-5678");
-            user2.setDivision(divisionRepository.findAll().get(2));
+            user2.setDivision(divisionRepository.findAll().get(7));
             user2.setCreateDate(new Date());
             user2.setLastUpdate(new Date());
             customerRepository.save(user2);
@@ -51,7 +51,7 @@ public class BootStrapData {
             user3.setPostal_code("12345");
             user3.setAddress("40 Legend Ln");
             user3.setPhone("(604)555-9101");
-            user3.setDivision(divisionRepository.findAll().get(3));
+            user3.setDivision(divisionRepository.findAll().get(5));
             user3.setCreateDate(new Date());
             user3.setLastUpdate(new Date());
             customerRepository.save(user3);
@@ -62,7 +62,7 @@ public class BootStrapData {
             user4.setPostal_code("12345");
             user4.setPhone("(604)555-1121");
             user4.setAddress("43 Defense Dr");
-            user4.setDivision(divisionRepository.findAll().get(4));
+            user4.setDivision(divisionRepository.findAll().get(2));
             user4.setCreateDate(new Date());
             user4.setLastUpdate(new Date());
             customerRepository.save(user4);
@@ -73,7 +73,7 @@ public class BootStrapData {
             user5.setPostal_code("12345");
             user5.setAddress("35 Save St");
             user5.setPhone("(604)555-3141");
-            user5.setDivision(divisionRepository.findAll().get(5));
+            user5.setDivision(divisionRepository.findAll().get(3));
             user5.setCreateDate(new Date());
             user5.setLastUpdate(new Date());
             customerRepository.save(user5);
