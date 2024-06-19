@@ -13,22 +13,22 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "divisions")
+@Table(name="divisions")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Division {
+public class Division{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "division_id")
     @JsonProperty("id")
     private Long id;
 
     @Column(name = "division")
     @JsonProperty("division_name")
-    private String divisionName;
+    private String division_name;
 
     @CreationTimestamp
     @Column(name = "create_date")
@@ -38,13 +38,21 @@ public class Division {
     @UpdateTimestamp
     @Column(name = "last_update")
     @JsonProperty("last_update")
-    private Date lastUpdate;
+    private Date last_update;
 
     @ManyToOne
     @JoinColumn(name = "country_id")
     @JsonProperty("country_id")
     private Country country;
 
+    @Column(name = "country_id", insertable = false, updatable = false)
+    private Long countryID;
+
     @OneToMany(mappedBy = "division", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Customer> customers;
+
+    public void setCountry(Country country) {
+        this.country = country;
+        this.countryID = (country != null) ? country.getId() : null;
+    }
 }

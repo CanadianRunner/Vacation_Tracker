@@ -16,7 +16,6 @@ import java.util.Set;
 @Table(name = "vacations")
 @Getter
 @Setter
-@NoArgsConstructor
 public class Vacation {
 
     @Id
@@ -27,11 +26,11 @@ public class Vacation {
 
     @Column(name = "vacation_title")
     @JsonProperty("vacation_title")
-    private String vacationTitle;
+    private String vacation_title;
 
     @Column(name = "image_url")
     @JsonProperty("image_URL")
-    private String imageUrl;
+    private String image_URL;
 
     @Column(name = "description")
     @JsonProperty("description")
@@ -39,10 +38,10 @@ public class Vacation {
 
     @Column(name = "travel_fare_price")
     @JsonProperty("travel_price")
-    private BigDecimal travelPrice;
+    private BigDecimal travel_price;
 
     @CreationTimestamp
-    @Column(name = "create_date", updatable = false)
+    @Column(name = "create_date")
     @JsonProperty("create_date")
     private Date createDate;
 

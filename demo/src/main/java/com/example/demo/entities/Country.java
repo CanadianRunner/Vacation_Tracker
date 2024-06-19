@@ -25,18 +25,17 @@ public class Country {
     private Long id;
 
     @Column(name = "country")
-    @JsonProperty("country")
-    private String countryName;
+    private String country_name;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date")
-    @JsonProperty("create_date")
-    private Date createDate;
+    @JsonProperty("country")
+    private Date create_date;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_update")
-    @JsonProperty("last_update")
-    private Date lastUpdate;
+    @JsonProperty("create_date")
+    private Date last_update;
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonProperty("divisions")

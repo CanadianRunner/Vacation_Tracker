@@ -27,7 +27,7 @@ public class CartItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "vacation_id", nullable = false)
+    @JoinColumn(name = "vacation_id")
     @JsonProperty("vacation")
     private Vacation vacation;
 
@@ -41,17 +41,18 @@ public class CartItem {
     private Set<Excursion> excursions;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
+    @JoinColumn(name = "cart_id")
     @JsonProperty("cart")
     private Cart cart;
 
     @CreationTimestamp
-    @Column(name = "create_date", updatable = false)
+    @Column(name = "create_date")
     @JsonProperty("create_date")
-    private Date createDate;
+    private Date create_date;
 
     @UpdateTimestamp
     @Column(name = "last_update")
     @JsonProperty("last_update")
-    private Date lastUpdate;
+    private Date last_update;
+
 }

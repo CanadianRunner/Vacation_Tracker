@@ -30,11 +30,11 @@ public class Cart {
 
     @Column(name = "package_price")
     @JsonProperty("package_price")
-    private BigDecimal packagePrice;
+    private BigDecimal package_price;
 
     @Column(name = "party_size")
     @JsonProperty("party_size")
-    private int partySize;
+    private int party_size;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -44,23 +44,21 @@ public class Cart {
     @CreationTimestamp
     @Column(name = "create_date")
     @JsonProperty("create_date")
-    private Date createDate;
+    private Date create_date;
 
     @UpdateTimestamp
     @Column(name = "last_update")
     @JsonProperty("last_update")
-    private Date lastUpdate;
+    private Date last_update;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonProperty("customer")
     private Customer customer;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<CartItem> cartItems = new HashSet<>();
+    private Set<CartItem> cartItem = new HashSet<>();
 
     public void add(CartItem cartItem) {
-        this.cartItems.add(cartItem);
-        cartItem.setCart(this);
+        this.cartItem.add(cartItem);
     }
 }
