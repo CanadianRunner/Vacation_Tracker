@@ -30,6 +30,9 @@ their order. Developing this application helped me grow my understanding of Java
 ## Technology Used
 
 * Java
+* Spring Framework (Spring Boot, Spring Data JPA, Spring Data REST)
+* MySQL
+* Lombok
 
 ## Setup/Installation Requirements
 
