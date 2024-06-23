@@ -11,7 +11,7 @@
 ## Description
 
 _This is a backend project I created for my B.S. in Software Engineering that manages a vacation booking website. The
-user is able to create users for checkout and ascribing a vacation package. They are also able to select different
+user is able to create users for checkout and ascribe a vacation package. They are also able to select different
 countries and apply excursions to that trip. Upon checkout the user is provided a total and a confirmation number for
 their order. Developing this application helped me grow my understanding of Java and HTML_
 

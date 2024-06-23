@@ -42,18 +42,13 @@ public class CheckoutServiceImpl implements CheckoutService {
                 throw new IllegalArgumentException("At least one cart item is required to proceed.");
             }
 
-            CartItem[] cartItemArray = cartItems.toArray(new CartItem[0]);
-            int i = 0;
-            while (i < cartItemArray.length) {
-                CartItem item = cartItemArray[i];
+            for (CartItem item : cartItems) {
                 item.setCart(cart);
-                cart.add(item);
-                i++;
             }
 
             cart.setOrderTrackingNumber(orderTrackingNumber);
             cart.setStatus(StatusType.ordered);
-            customer.add(cart);
+            cart.setCartItems(cartItems);
 
             cartRepository.save(cart);
             customerRepository.save(customer);
